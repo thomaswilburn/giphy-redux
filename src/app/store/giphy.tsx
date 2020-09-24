@@ -1,8 +1,15 @@
 // defines a set of middleware for accessing GIPHY
 
-var request = async function(endpoint, params = {}) {
-  var url = new URL("https://api.giphy.com/v1/gifs/" + endpoint);
-  url.searchParams.set("api_key", process.env.REACT_APP_GIPHY_KEY);
+import { Dispatch } from 'react';
+import { Action } from './types';
+
+interface Parameters {
+  [key: string]: any
+}
+
+var request = async function(method:string, params: Parameters = {}) {
+  var url = new URL("https://api.giphy.com/v1/gifs/" + method);
+  url.searchParams.set("api_key", (process.env["REACT_APP_GIPHY_KEY"] as string));
   for (var p in params) {
     url.searchParams.set(p, params[p]);
   }
@@ -11,7 +18,7 @@ var request = async function(endpoint, params = {}) {
   return json;
 }
 
-var addTrending = async function(dispatch, limit = 10, offset = 0) {
+var addTrending = async function(dispatch: Dispatch<Action>, limit = 10, offset = 0) {
   dispatch({ type: "LOADING"});
 
   var data = await request("trending", { limit, offset });
@@ -19,15 +26,21 @@ var addTrending = async function(dispatch, limit = 10, offset = 0) {
   dispatch({ type: "APPEND", payload: data.data });
 }
 
-var giphyMiddleware = function(store) {
-  return dispatch => action => {
-    var state = store.getState();
+var addSearch = async function(dispatch: Dispatch<Action>) {
 
-    switch (action.type) {
-      case "LOAD_TRENDING":
-        return addTrending(dispatch, 40, state.gifs.length);
+}
+
+var giphyMiddleware = function(store: any) {
+  return function(dispatch: Dispatch<Action>) {
+    return function(action: Action) {
+      var state = store.getState();
+
+      switch (action.type) {
+        case "LOAD_TRENDING":
+          return addTrending(dispatch, 40, state.gifs.length);
+      }
+      return dispatch(action);
     }
-    return dispatch(action);
   }
 }
 

@@ -1,6 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
 import giphy from './store/giphy.tsx';
-console.log(giphy);
 
 const preloadedState = {
   gifs: [],

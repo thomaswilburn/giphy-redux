@@ -1,8 +1,10 @@
-.preview-grid {
+.preview-grid .image-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
 
 .preview-grid img {
-  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

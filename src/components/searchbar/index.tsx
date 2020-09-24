@@ -1,21 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-class SearchBar extends React.Component {
-  constructor() {
-    super();
+interface State {
+  search: string
+}
+
+interface Props {
+  dispatch?: any
+}
+
+class SearchBar extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
     this.state = {
       search: ""
     };
 
-    [
-      "onClickedSearch",
-      "onChangeSearch"
-    ].forEach(f => this[f] = this[f].bind(this));
+    this.onClickedSearch = this.onClickedSearch.bind(this);
+    this.onChangeSearch = this.onChangeSearch.bind(this);
   }
 
-  onChangeSearch(e) {
-    var search = e.target.value;
+  onChangeSearch(e: React.SyntheticEvent) {
+    var search = (e.target as HTMLInputElement).value;
     this.setState({ search });
   }
 
