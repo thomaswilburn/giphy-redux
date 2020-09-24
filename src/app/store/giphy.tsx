@@ -19,15 +19,19 @@ var request = async function(method:string, params: Parameters = {}) {
 }
 
 var addTrending = async function(dispatch: Dispatch<Action>, limit = 10, offset = 0) {
-  dispatch({ type: "LOADING"});
+  dispatch({ type: "LOADING" });
 
-  var data = await request("trending", { limit, offset });
+  var { data } = await request("trending", { limit, offset });
 
-  dispatch({ type: "APPEND", payload: data.data });
+  dispatch({ type: "APPEND", payload: data });
 }
 
-var addSearch = async function(dispatch: Dispatch<Action>) {
+var addSearch = async function(dispatch: Dispatch<Action>, q: string, limit = 10, offset = 0) {
+  dispatch({ type: "LOADING" });
 
+  var { data } = await request("search", { q, limit, offset });
+
+  dispatch({ type: "APPEND", payload: data });
 }
 
 var giphyMiddleware = function(store: any) {
@@ -38,6 +42,16 @@ var giphyMiddleware = function(store: any) {
       switch (action.type) {
         case "LOAD_TRENDING":
           return addTrending(dispatch, 40, state.gifs.length);
+          break;
+
+        case "SEARCH":
+          dispatch({ type: "CLEAR" });
+          return addSearch(dispatch, action.payload, 40, 0);
+          break;
+
+        case "MORE_SEARCH":
+          return addSearch(dispatch, state.search, 40, state.gifs.length);
+          break;
       }
       return dispatch(action);
     }
