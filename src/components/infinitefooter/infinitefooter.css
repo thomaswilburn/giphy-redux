@@ -1,0 +1,9 @@
+.infinite-footer {
+  padding: 40px;
+  color: #888;
+  letter-spacing: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+}
