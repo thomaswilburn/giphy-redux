@@ -2,17 +2,29 @@ import React from 'react';
 import { connect } from 'react-redux';
 import './infinitefooter.css';
 
+interface Reference {
+  current: HTMLElement
+}
+
 interface Props {
   dispatch: any
 }
 
 interface State {
-  ref: React.Reference
+  ref: Reference
 }
 
-class InfiniteFooter extends React.Component {
-  constructor() {
-    super();
+interface Observer {
+  ref: any,
+  observer: any
+}
+
+class InfiniteFooter extends React.Component<Props, State> implements Observer {
+  ref: any
+  observer: any
+
+  constructor(props: Props) {
+    super(props);
     this.ref = React.createRef();
     this.observer = new IntersectionObserver(([ entry ]) => {
       if (entry.isIntersecting) {
@@ -22,7 +34,7 @@ class InfiniteFooter extends React.Component {
   }
 
   componentDidMount() {
-    this.observer.observe(this.ref.current);
+    this.observer.observe(this.ref.current as HTMLElement);
   }
 
   componentWillUnmount() {
