@@ -1,16 +1,24 @@
-export interface Format {
+export interface Rendition {
   width: string,
   height: string,
-  size: string,
   url: string,
-  frames: string,
-  hash: string
+  size?: string,
+  frames?: string,
+  hash?: string
+  mp4?: string
 }
 
 export interface Image {
   id: string,
   images: {
-    [key: string]: Format
+    downsized: Rendition,
+    downsized_still: Rendition,
+    original: Rendition,
+    original_still: Rendition,
+    preview: Rendition,
+    looping: Rendition,
+    // catch-all for other sizes
+    [key: string]: Rendition
   }
 }
 
