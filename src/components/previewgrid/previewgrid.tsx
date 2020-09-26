@@ -20,8 +20,8 @@ class PreviewGrid extends React.Component<Props, object> {
     this.onClickPreview = this.onClickPreview.bind(this);
   }
 
-  onClickPreview() {
-
+  onClickPreview(g: Image) {
+    this.props.dispatch({ type: "app:preview", payload: g });
   }
 
   render() {
@@ -32,7 +32,14 @@ class PreviewGrid extends React.Component<Props, object> {
 
     if (images && images.length) {
       content = <div className="image-grid">
-        {images.map((g: Image) => <img alt="" src={g.images.downsized.url} key={g.id} />)}
+        {images.map((g: Image) => (
+          <img 
+            alt="" 
+            src={g.images.downsized.url} 
+            key={g.id} 
+            onClick={() => this.onClickPreview(g)}
+          />
+        ))}
       </div>
     }
 

@@ -27,9 +27,22 @@ export default function(state: object, action: Action) {
         search: ""
       }
 
+    case "app:preview":
+      return {
+        ...state,
+        preview: action.payload.images.original.url
+      };
+
+    case "app:preview-close":
+      return {
+        ...state,
+        preview: null
+      };
+
   }
   return state || {
     loading: false,
-    query: ""
+    query: "",
+    preview: null
   };
 }
